@@ -1,58 +1,68 @@
 import React  from 'react'
+import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import SimpleMDE from 'react-simplemde-editor'
-import {STRINGS, TEXT_SAVE} from '../glocalization'
-import "simplemde/dist/simplemde.min.css"
+import ReactMarkdown from 'react-markdown'
 
 export default class Item extends React.Component{
   state={
-    text:"",
-    initialized:false
+    comment:"",
+    modelActive:false
   }
 
   componentDidMount(){
     this.props.loadItem(this.props.name)
   }
 
-  handleChange = value => {
-    this.setState({ 
-      text: value,
-      initialized: true
-     })
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.name !== prevProps.name) {
+      this.props.loadItem(this.props.name)
+    }
   }
 
   render() {
     const {item}=this.props
-    const options={
-      autofocus:true,
-      toolbar: ["bold", "italic","strikethrough", "heading",
-      "code","quote","unordered-list","ordered-list","link",
-      "image","table","horizontal-rule","preview"]
-    }
     if(item.hasOwnProperty('content')){
-      let text=this.state.initialized?this.state.text:item.content
       return (
         <div>
-          <nav className="level">
-            <div className="level-left">              
-              <p className="level-item"><h5 class="subtitle is-5">{item.name}</h5></p>
-            </div>
-
-            <div className="level-right">
-              <p className="level-item"><a className="button is-small is-success">{STRINGS.texts[TEXT_SAVE]}</a></p>
-            </div>
-          </nav>
-          <SimpleMDE
-            onChange={this.handleChange}
-            value={text}
-            options={options}
-          />   
+          <Link className="title is-3 has-text-link" to={`/update/item/${item.name}`} title={`Update '${item.name}'`}>{item.name}</Link>                       
+          <hr/>
+          <div className="content">
+            <ReactMarkdown source={item.content} />              
+          </div>    
+          <hr/>
+          <h5 className="subtitle is-5">{item.comments.length} comments</h5>
+          <ul>
+          {
+            item.comments.map((comment)=>(
+              <li key={comment.sha}>
+                <article className="media">
+                  <figure className="media-left">
+                    <p className="image is-64x64">
+                      <img src={comment.author.avatar_url} alt={comment.author.login}/>
+                    </p>
+                  </figure>
+                  <div className="media-content">
+                    <div className="content">
+                      <p>
+                        <a href={comment.author.html_url} target="_blank"><small>@{comment.author.login}</small></a>
+                        <br/>
+                        {comment.commit.message}
+                      </p>
+                    </div>
+                  </div>
+                </article>              
+                <br/>
+              </li>
+            ))
+          }            
+          </ul>      
         </div>   
       )  
     }else{
       return (
-        <span class="icon is-large">
-          <i class="fas fa-3x fa-spinner fa-pulse"></i>
+        <span className="icon is-large">
+          <i className="fas fa-3x fa-spinner fa-pulse"></i>
         </span>
       )
     }
@@ -61,5 +71,6 @@ export default class Item extends React.Component{
 
 Item.propTypes={
   name:PropTypes.string.isRequired,
+  item:PropTypes.object.isRequired,
   loadItem: PropTypes.func.isRequired
 }

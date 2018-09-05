@@ -44,7 +44,7 @@ export default class Login extends React.Component{
       <div className="field">
         <label className="label">{label}</label>
         <div className={message?"control has-icons-right":"control"}>
-          <input className={message?"input is-danger":"input"} name={name} value={user[name]} type={type} placeholder={STRINGS.texts[TEXT_USERNAME]} onChange={(e)=>this.setState(update(this.state,{user:{[name]:{$set:e.target.value}}}))}/>
+          <input className={message?"input is-danger":"input"} name={name} value={user[name]} type={type} placeholder={label} onChange={(e)=>this.setState(update(this.state,{user:{[name]:{$set:e.target.value}}}))}/>
           {
             message &&
               <span className="icon is-small is-right">

@@ -15,6 +15,7 @@ import About from './About'
 import Login from './Login'
 import ItemList from './ItemList'
 import Item from './Item'
+import UpdateItem from './UpdateItem'
 import {STRINGS,TEXT_HOME,TEXT_ABOUT, TEXT_LOGIN,TEXT_LOGOUT} from '../glocalization'
 
 import '../../node_modules/bulma/css/bulma.css'
@@ -79,6 +80,9 @@ export default class App extends Component {
               }/>              
               <Route exact path="/item/:name" render={({match})=>
                  <Item name={match.params.name}/>
+              }/>                            
+              <Route exact path="/update/item/:name" render={({match})=>
+                 <UpdateItem name={match.params.name}/>
               }/>                            
             </Switch>)
           }

@@ -13,11 +13,9 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {createStore} from './components/helper'
 import App from './components/App'
-import {loadItems} from './actions/items'
 import registerServiceWorker from './registerServiceWorker'
 
 const store=createStore()
-store.dispatch(loadItems())
 ReactDOM.render(
   <Provider store={store}>
     <App />

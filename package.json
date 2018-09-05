@@ -9,8 +9,12 @@
     "lodash": "^4.17.10",
     "lunr": "^2.3.2",
     "react": "^16.4.2",
+    "react-app-rewire-hot-loader": "^1.0.1",
+    "react-app-rewired": "^1.6.2",
     "react-dom": "^16.4.2",
+    "react-hot-loader": "^4.3.6",
     "react-localization": "^1.0.10",
+    "react-markdown": "^3.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
@@ -21,10 +25,10 @@
     "simplemde": "^1.11.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject"
   },
   "devDependencies": {
     "create-react-app": "^1.5.2",

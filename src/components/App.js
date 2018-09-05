@@ -8,6 +8,7 @@
  */
 
  import {connect} from 'react-redux'
+ import { hot } from 'react-hot-loader'
 import App from './App.react'
 import {userLoggedOut,languageChanged,messagesDeleted} from '../actions/session'
 
@@ -25,4 +26,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(App)
+export default hot(module)(connect(mapStateToProps,mapDispatchToProps)(App))

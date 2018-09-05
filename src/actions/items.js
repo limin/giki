@@ -7,7 +7,7 @@
  * 
  */
 
-import Gikistore from '../api/Gikistore'
+import gikistore from '../api'
 
 export const ITEMS_RECEIVED='ITEMS_RECEIVED'
 
@@ -20,7 +20,6 @@ export function itemsReceived(items){
 
 export function loadItems(space="."){
 	return function(dispatch){
-		const gikistore=new Gikistore()
 		gikistore.listItems(space).then((items)=>{
 			dispatch(itemsReceived(items))
 		})
@@ -29,9 +28,16 @@ export function loadItems(space="."){
 
 export function loadItem(name){
 	return function(dispatch){
-		const gikistore=new Gikistore()
 		gikistore.readItem(name).then((item)=>{
 			dispatch(itemsReceived([item]))
+		})
+	}
+}
+
+export function writeItem(name,content,message){
+	return function(dispatch){
+		gikistore.writeItem(name,content,message).then((data)=>{
+			//dispatch(loadItem(name))//there seems to be a delay to reflect the changes in git
 		})
 	}
 }

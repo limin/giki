@@ -7,44 +7,34 @@
  * 
  */
 
-
-import * as config from '../config'
 const GitHub=require('github-api')
-const MASTER_BRANCH='master'
-const FILENAME_EXTENSION=".md"
 
-
-export default class Gikistore{
-  constructor(){
-    this.config={
-      username:config.GITHUB_USERNAME,
-      repo:config.GITHUB_REPO,
-      password:config.GITHUB_PASSWORD,
-      token:config.GITHUB_TOKEN      
-    }
+export default class Gikistore{  
+  constructor({username,repo,branch,extension}){
+    this.username=username
+    this.repo=repo
+    this.branch=branch
+    this.extension=extension
   }
-  
-  set config(conf){
-    const {username,password,token,repo}=conf
+  set authorization(authorization){
+    const {username,password,token}=authorization
     if(username && password){
       this.github=new GitHub({username,password})
     }else if(token){
       this.github=new GitHub({token})
     }else{
-      throw new Error("Invalid Config.")
+      throw new Error("Invalid authorization.")
     }
-    this.username=username
-    this.repo=repo
   }
 
-  itemFilter(file){
-    return file.type==='file' && file.name.endsWith(FILENAME_EXTENSION)
+  filtFile(file){
+    return file.type==='file' && file.name.endsWith(this.extension)
   }
 
-  itemMapper(file){
+  mapFile(file){
     return {
       ...file,
-      name:file.name.substring(0,file.name.length-FILENAME_EXTENSION.length)
+      name:file.name.substring(0,file.name.length-this.extension.length)
     }
   }
 
@@ -69,13 +59,13 @@ export default class Gikistore{
 
   listItems(space="."){
     const repo=this.github.getRepo(this.username, this.repo)
-    return repo.getContents(MASTER_BRANCH,space).then((response)=>{
-      return this.createPromise(response.data.filter(this.itemFilter).map(this.itemMapper))
+    return repo.getContents(this.branch,space).then((response)=>{
+      return this.createPromise(response.data.filter(file=>this.filtFile(file)).map(file=>this.mapFile(file)))
     })
   }
 
   listComments(name){
-    const path=`${name}${FILENAME_EXTENSION}`
+    const path=`${name}${this.extension}`
     const repo=this.github.getRepo(this.username, this.repo)
     return repo.listCommits({path}).then((response)=>{
       return this.createPromise(response.data)
@@ -83,14 +73,14 @@ export default class Gikistore{
   }
 
   readItem(name){
-    const path=`${name}${FILENAME_EXTENSION}`    
+    const path=`${name}${this.extension}`    
     const repo=this.github.getRepo(this.username, this.repo)
-    return Promise.all([repo.getContents(MASTER_BRANCH,path),repo.listCommits({path})]).then(([resp1,resp2])=>{
-      const items=[resp1.data].filter(this.itemFilter).map(this.itemMapper)
+    return Promise.all([repo.getContents(this.branch,path),repo.listCommits({path})]).then(([resp1,resp2])=>{
+      const items=[resp1.data].filter(file=>this.filtFile(file)).map(file=>this.mapFile(file))
       if(items.length===1){
         const item=items[0]
         item.content=window.atob(item.content)
-        item.commits=resp2.data
+        item.comments=resp2.data
         return this.createPromise(item)        
       }else{
         return this.createPromise(null)        
@@ -99,17 +89,17 @@ export default class Gikistore{
   }
 
   writeItem(name, content, message){
-    const path=`${name}${FILENAME_EXTENSION}`    
+    const path=`${name}${this.extension}`    
     const repo=this.github.getRepo(this.username, this.repo)
-    return repo.writeFile(MASTER_BRANCH,path,content,message).then((response)=>{
+    return repo.writeFile(this.branch,path,content,message,{}).then((response)=>{
       return this.createPromise(response.data)
     })
   }
 
   deleteItem(name){
-    const path=`${name}${FILENAME_EXTENSION}`    
+    const path=`${name}${this.extension}`    
     const repo=this.github.getRepo(this.username, this.repo)
-    return repo.deleteFile(MASTER_BRANCH,path).then((response)=>{
+    return repo.deleteFile(this.branch,path).then((response)=>{
       return this.createPromise(response.data)
     })
   }

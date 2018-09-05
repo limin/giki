@@ -7,7 +7,7 @@
  * 
  */
 
-import Gikistore from '../api/Gikistore'
+import gikistore from '../api'
 import {MESSAGE_INVALID_LOGIN} from '../glocalization'
 import {loadItems} from './items'
 
@@ -16,8 +16,6 @@ export const MESSAGES_DELETED='MESSAGES_DELETED'
 export const MESSAGES_RECEIVED='MESSAGES_RECEIVED'
 export const USER_LOGGED_IN='USER_LOGGED_IN'
 export const USER_LOGGED_OUT='USER_LOGGED_OUT'
-
-const gikistore=new Gikistore()
 
 export function userLoggedOut(){
 	return {
@@ -55,10 +53,9 @@ export function languageChanged(language){
 
 export function login(username,password){
 	return function(dispatch){
-		gikistore.config={
+		gikistore.authorization={
 			username,
-			password,
-			repo:gikistore.repo
+			password
 		}
 		gikistore.getUserProfile().then(user=>{
 			dispatch(userLoggedIn(user))
