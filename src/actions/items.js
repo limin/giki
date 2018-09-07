@@ -38,6 +38,11 @@ export function writeItem(item,message){
 	const {name,content}=item
 	return function(dispatch){
 		gikistore.writeItem(name,content,message).then((data)=>{
+			//since there is a delay in git to commit the changes,
+			// loadItem won't return the new updated item, 
+			// dispatch(loadItem(name)) won't work here. 
+			// Manually set comments empty comments for new item as a workaround.
+			if(!item.comments) item.comments=[]
 			dispatch(itemsReceived([item]))
 		})
 	}
