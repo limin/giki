@@ -9,7 +9,7 @@
 
  import {connect} from 'react-redux'
  import { hot } from 'react-hot-loader'
-import App from './App.react'
+import App from './App.jsx'
 import {userLoggedOut,languageChanged,messagesDeleted} from '../actions/session'
 
 function mapStateToProps({session}){

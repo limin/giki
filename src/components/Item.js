@@ -8,7 +8,7 @@
  */
 
 import {connect} from 'react-redux'
-import Item from './Item.react'
+import Item from './Item.jsx'
 import {loadItem} from '../actions/items'
 
 function mapStateToProps({session,items},{name}){

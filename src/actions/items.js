@@ -34,10 +34,11 @@ export function loadItem(name){
 	}
 }
 
-export function writeItem(name,content,message){
+export function writeItem(item,message){
+	const {name,content}=item
 	return function(dispatch){
 		gikistore.writeItem(name,content,message).then((data)=>{
-			//dispatch(loadItem(name))//there seems to be a delay to reflect the changes in git
+			dispatch(itemsReceived([item]))
 		})
 	}
 }

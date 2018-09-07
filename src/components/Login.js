@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
-import Login from './Login.react'
+import Login from './Login.jsx'
 import {login} from '../actions/session'
 
 

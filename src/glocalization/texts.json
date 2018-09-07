@@ -9,7 +9,8 @@
    "language":"Language",
    "english":"English",
    "simpleChinese":"Simple Chinese",
-   "add":"Add",
+   "create":"Create",
+   "update":"Update",
    "search":"Search", 
    "save":"Save"  
  },
@@ -23,7 +24,8 @@
    "language":"语言",
    "english":"英文",
    "simpleChinese":"简体中文",
-   "add":"添加",
+   "create":"创建",
+   "update":"更改",   
    "search":"搜索",
    "save":"保存"     
  }

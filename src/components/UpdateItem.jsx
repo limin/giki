@@ -8,7 +8,7 @@ import "simplemde/dist/simplemde.min.css"
 export default class UpdateItem extends React.Component{
   state={
     comment:"",
-    modelActive:false
+    modalActive:false
   }
 
   componentDidMount(){
@@ -24,12 +24,13 @@ export default class UpdateItem extends React.Component{
     
 
   save(){
-    this.props.save(this.props.item.name,this.props.item.content,this.state.comment)
+    this.props.save(this.props.item,this.state.comment)
     this.setModalActive(false)
+    this.props.history.go(-1)    
   }
 
   setModalActive(active=true){
-    const state=update(this.state,{modelActive:{$set:active}})
+    const state=update(this.state,{modalActive:{$set:active}})
     this.setState(state)
   }
 
@@ -68,7 +69,7 @@ export default class UpdateItem extends React.Component{
             options={options}
           />  
 
-          {this.state.modelActive && 
+          {this.state.modalActive && 
           <div className="modal is-active">
             <div className="modal-background"></div>
             <div className="modal-card">
@@ -109,5 +110,6 @@ export default class UpdateItem extends React.Component{
 UpdateItem.propTypes={
   name:PropTypes.string.isRequired,
   item:PropTypes.object.isRequired,
-  loadItem: PropTypes.func.isRequired
+  loadItem: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 }

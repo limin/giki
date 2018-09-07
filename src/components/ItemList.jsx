@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import lunr from 'lunr'
 import update from 'immutability-helper'
-import {STRINGS,TEXT_SEARCH,TEXT_ADD} from '../glocalization'
+import {STRINGS,TEXT_SEARCH,TEXT_CREATE} from '../glocalization'
 
 class ItemList extends React.Component{
   state={
@@ -52,7 +52,7 @@ class ItemList extends React.Component{
           </div>
 
           <div className="level-right">
-            <p className="level-item"><Link className="button is-small is-success" to={"/add/item"}>{STRINGS.texts[TEXT_ADD]}</Link></p>
+            <p className="level-item"><Link className="button is-small is-success" to={"/create/item"}>{STRINGS.texts[TEXT_CREATE]}</Link></p>
           </div>
         </nav>
 

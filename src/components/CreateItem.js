@@ -9,21 +9,19 @@
 
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
-import UpdateItem from './UpdateItem.jsx'
-import {loadItem, writeItem} from '../actions/items'
+import CreateItem from './CreateItem.jsx'
+import {writeItem} from '../actions/items'
 
 function mapStateToProps({session,items},{name}){
   return {
-    session,
-    item:items[name]
+    session
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    loadItem: (name)=>dispatch(loadItem(name)),
-    save: (name,content,message)=>dispatch(writeItem(name,content,message))
+    create: (item,message)=>dispatch(writeItem(item,message))
   }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(UpdateItem))
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(CreateItem))
