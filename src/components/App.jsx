@@ -8,9 +8,8 @@
  */
 
 import React, { Component } from 'react'
-import {BrowserRouter,Route, Link, Switch, Redirect} from 'react-router-dom'
+import {HashRouter,Route, Link, Switch, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import * as config from '../config'
 import About from './About'
 import Login from './Login'
 import ItemList from './ItemList'
@@ -35,7 +34,7 @@ export default class App extends Component {
   render() {
     const {user,messages}=this.props.session
     return (
-      <BrowserRouter basename={config.PUBLIC_URL}>
+      <HashRouter>
         <div>
           <nav className="navbar is-transparent">
             <div className="navbar-menu is-active">
@@ -96,7 +95,7 @@ export default class App extends Component {
           }
           </section>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }

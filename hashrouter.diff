@@ -1,0 +1,31 @@
+diff --git a/src/components/App.jsx b/src/components/App.jsx
+index 7a48829..c526e7f 100644
+--- a/src/components/App.jsx
++++ b/src/components/App.jsx
+@@ -8,7 +8,7 @@
+  */
+ 
+ import React, { Component } from 'react'
+-import {BrowserRouter,Route, Link, Switch, Redirect} from 'react-router-dom'
++import {BrowserRouter,HashRouter,Route, Link, Switch, Redirect} from 'react-router-dom'
+ import PropTypes from 'prop-types'
+ import * as config from '../config'
+ import About from './About'
+@@ -35,7 +35,7 @@ export default class App extends Component {
+   render() {
+     const {user,messages}=this.props.session
+     return (
+-      <BrowserRouter basename={config.PUBLIC_URL}>
++      <HashRouter>
+         <div>
+           <nav className="navbar is-transparent">
+             <div className="navbar-menu is-active">
+@@ -96,7 +96,7 @@ export default class App extends Component {
+           }
+           </section>
+         </div>
+-      </BrowserRouter>
++      </HashRouter>
+     )
+   }
+ }
