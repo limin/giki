@@ -88,6 +88,16 @@ export default class Gikistore{
     })
   }
 
+  readRawFile(name){
+    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${name}${this.extension}`
+    return fetch(url).then(response=>{
+      if(response.status===404){
+        throw new Error("File not found")
+      }
+      return response.text()
+    })
+  }
+
   writeItem(name, content, message){
     const path=`${name}${this.extension}`    
     const repo=this.github.getRepo(this.username, this.repo)

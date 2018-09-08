@@ -34,6 +34,15 @@ export function loadItem(name){
 	}
 }
 
+export function readRawFile(name){
+	return function(dispatch){
+		gikistore.readRawFile(name).then((content)=>{
+			const item={name,content}
+			dispatch(itemsReceived([item]))
+		})
+	}
+}
+
 export function writeItem(item,message){
 	const {name,content}=item
 	return function(dispatch){

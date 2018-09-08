@@ -17,6 +17,7 @@ import ItemList from './ItemList'
 import Item from './Item'
 import UpdateItem from './UpdateItem'
 import CreateItem from './CreateItem'
+import ViewItem from './ViewItem'
 import {STRINGS,TEXT_HOME,TEXT_ABOUT, TEXT_LOGIN,TEXT_LOGOUT} from '../glocalization'
 
 import '../../node_modules/bulma/css/bulma.css'
@@ -64,6 +65,9 @@ export default class App extends Component {
                 <Route exact path="/about" render={()=>
                    <About/>                   
           		  }/>
+                <Route exact path="/view/item/:name" render={({match})=>
+                  <ViewItem name={match.params.name}/>
+                }/>                            
                 <Route exact path="/*" render={()=>
           			   <Login/>
           		  }/>
