@@ -58,41 +58,45 @@ export default class App extends Component {
                 </div>
               ))
             }
-            {user===null?
-            (
-              <Switch>
-                <Route exact path="/about" render={()=>
-                   <About/>                   
-          		  }/>
-                <Route exact path="/view/item/:name" render={({match})=>
-                  <ViewItem name={match.params.name}/>
-                }/>                            
-                <Route exact path="/*" render={()=>
+
+            <Switch>
+              <Route exact path="/about" render={()=>
+                  <About/>                   
+              }/>
+              <Route exact path="/view/item/:name" render={({match})=>
+                <ViewItem name={match.params.name}/>
+              }/>                            
+              {user && 
+                <Route exact path="/" render={()=>
+                  <Redirect to="/list/items" />
+                }/>
+              }
+              {user && 
+                <Route exact path="/list/items" render={()=>
+                  <ItemList/>
+                }/>    
+              }
+              {user &&           
+                <Route exact path="/item/:name" render={({match})=>
+                  <Item name={match.params.name}/>
+                }/>    
+              }
+              {user &&                         
+                <Route exact path="/update/item/:name" render={({match})=>
+                  <UpdateItem name={match.params.name}/>
+                }/>    
+              }
+              {user &&                         
+                <Route exact path="/create/item" render={()=>
+                  <CreateItem/>
+                }/>    
+              }                                  
+              {user===null && 
+                <Route render={()=>
           			   <Login/>
           		  }/>
-              </Switch>
-            ):
-            (<Switch>
-              <Route exact path="/" render={()=>
-                <Redirect to="/list/items" />
-              }/>
-              <Route exact path="/about" render={()=>
-                 <About/>
-              }/>
-              <Route exact path="/list/items" render={()=>
-                 <ItemList/>
-              }/>              
-              <Route exact path="/item/:name" render={({match})=>
-                 <Item name={match.params.name}/>
-              }/>                            
-              <Route exact path="/update/item/:name" render={({match})=>
-                 <UpdateItem name={match.params.name}/>
-              }/>                            
-              <Route exact path="/create/item" render={()=>
-                 <CreateItem/>
-              }/>                            
-            </Switch>)
-          }
+              }
+            </Switch>
           </section>
         </div>
       </HashRouter>
