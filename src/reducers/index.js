@@ -11,5 +11,6 @@ import {combineReducers } from 'redux'
 import session from './session'
 import items from './items'
 import users from './users'
+import surls from './surls'
 
-export default combineReducers({session,users,items})
+export default combineReducers({session,users,items,surls})

@@ -21,7 +21,8 @@ export function createStore(){
       messages:{}
     },
     users:{},
-    items:{}
+    items:{},
+    surls:{}
   }
   const loggerMiddleware = createLogger()
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

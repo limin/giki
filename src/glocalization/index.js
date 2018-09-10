@@ -36,6 +36,7 @@ export const TEXT_CREATE='create'
 export const TEXT_UPDATE='update'
 export const TEXT_SEARCH='search'
 export const TEXT_SAVE='save'
+export const TEXT_SHARE='share'
 
 export const MESSAGE_INVALID_USERNAME='invalidUsername'
 export const MESSAGE_INVALID_PASSWORD='invalidPassword'

@@ -10,17 +10,20 @@
 import {connect} from 'react-redux'
 import Item from './Item.jsx'
 import {loadItem} from '../actions/items'
+import {writeSurl} from '../actions/surls'
 
-function mapStateToProps({session,items},{name}){
+function mapStateToProps({session,items,surls},{name}){
   return {
     session,
-    item:items[name]
+    item:items[name],
+    surl:surls[name]
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    loadItem: (name)=>dispatch(loadItem(name))
+    loadItem: (name)=>dispatch(loadItem(name)),
+    writeSurl:(name)=>dispatch(writeSurl(name))
   }
 }
 

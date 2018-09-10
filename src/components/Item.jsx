@@ -2,7 +2,9 @@ import React  from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
-import {STRINGS,TEXT_UPDATE} from '../glocalization'
+import update from 'immutability-helper'
+import * as config from '../config'
+import {STRINGS,TEXT_UPDATE,TEXT_SHARE} from '../glocalization'
 
 export default class Item extends React.Component{
   state={
@@ -21,20 +23,39 @@ export default class Item extends React.Component{
     }
   }
 
+  share(){
+    this.props.writeSurl(this.props.name)
+    this.setModalActive(true)
+  }
+
+  setModalActive(active=true){
+    this.setState(update(this.state,{modelActive:{$set:active}}))
+  }
+
+  buildSurl(hash){
+    const href=window.location.href
+    const pos=href.indexOf("/","https://".length)
+    return `${href.substring(0,pos)}${config.PUBLIC_URL}#/surl/${hash}`
+  }
+
   render() {
-    const {item}=this.props
+    const {item,surl}=this.props
     if(item.hasOwnProperty('content')){
       return (
         <div>
           <nav className="media">
-            <div class="media-content">
-              <div class="content">        
+            <div className="media-content">
+              <div className="content">        
                 <h3 className="title is-3">{item.name}</h3>
               </div>
             </div>
 
-            <div className="media-right">
-              <p><Link className="button is-small is-success" to={`/update/item/${item.name}`} title={`Update '${item.name}'`}>{STRINGS.texts[TEXT_UPDATE]}</Link></p>
+            <div className="media-right">   
+              <p>
+                <a className="button is-small is-success" title={`Share '${item.name}'`} onClick={(e)=>this.share()}>{STRINGS.texts[TEXT_SHARE]}</a>
+                &nbsp;&nbsp;
+                <Link className="button is-small is-success" to={`/update/item/${item.name}`} title={`Update '${item.name}'`}>{STRINGS.texts[TEXT_UPDATE]}</Link>
+              </p>
             </div>
           </nav>
 
@@ -69,6 +90,15 @@ export default class Item extends React.Component{
             ))
           }            
           </ul>      
+          <div className={`modal${this.state.modelActive?" is-active":""}`}>
+            <div className="modal-background"></div>
+            <div className="modal-content">
+              <div class={`control${surl?"":" is-loading"}`}>
+                <input className="input is-large" value={surl?this.buildSurl(surl.hash):""} readOnly></input>
+              </div>
+            </div>
+            <button className="modal-close is-large" aria-label="close" onClick={e=>this.setModalActive(false)}></button>
+          </div>          
         </div>   
       )  
     }else{
@@ -84,5 +114,6 @@ export default class Item extends React.Component{
 Item.propTypes={
   name:PropTypes.string.isRequired,
   item:PropTypes.object.isRequired,
-  loadItem: PropTypes.func.isRequired
+  loadItem: PropTypes.func.isRequired,
+  writeSurl: PropTypes.func.isRequired
 }

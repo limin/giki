@@ -7,6 +7,7 @@
  * 
  */
 
+ import {stringMd5} from 'pouchdb-md5'
 const GitHub=require('github-api')
 
 export default class Gikistore{  
@@ -101,8 +102,42 @@ export default class Gikistore{
   writeItem(name, content, message){
     const path=`${name}${this.extension}`    
     const repo=this.github.getRepo(this.username, this.repo)
+    //empty options is required to work around the bugs in the api
     return repo.writeFile(this.branch,path,content,message,{}).then((response)=>{
       return this.createPromise(response.data)
+    })
+  }
+
+  buildSurlPath(hash){
+    return `.surl/${hash}.json`
+  }
+
+  readSurl(hash){
+    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${this.buildSurlPath(hash)}`
+    return fetch(url).then(response=>{
+      if(response.status===404){
+        throw new Error("File not found")
+      }
+      return response.json()
+    })
+  }
+
+  writeSurl(name){
+    //only take first 10 chars
+    const hash=stringMd5(name).substring(0,10)
+    const path=this.buildSurlPath(hash)    
+    const repo=this.github.getRepo(this.username, this.repo)
+    const surl={
+      hash,
+      name,
+      timestamp:Date.now()
+    }
+    return repo.writeFile(this.branch,path,JSON.stringify(surl),`surl ${name}`,{}).then((response)=>{
+      if(response.status===200){
+        return this.createPromise(surl)
+      }else{
+        throw new Error(response.status)                                                                                                                                                                                            
+      }
     })
   }
 

@@ -12,6 +12,7 @@
    "create":"Create",
    "update":"Update",
    "search":"Search", 
+   "share":"Share",    
    "save":"Save"  
  },
  "cn": {
@@ -27,6 +28,7 @@
    "create":"创建",
    "update":"更改",   
    "search":"搜索",
+   "share":"分享",       
    "save":"保存"     
  }
 }

@@ -8,6 +8,7 @@
     "immutability-helper": "^2.7.1",
     "lodash": "^4.17.10",
     "lunr": "^2.3.2",
+    "pouchdb-md5": "^7.0.0",
     "react": "^16.4.2",
     "react-app-rewire-hot-loader": "^1.0.1",
     "react-app-rewired": "^1.6.2",
