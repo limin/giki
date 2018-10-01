@@ -10,17 +10,23 @@
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import CreateItem from './CreateItem.jsx'
-import {writeItem} from '../actions/items'
+import {writeItem,writeIndex} from '../actions/items'
 
 function mapStateToProps({session,items},{name}){
+  const names=[]
+  Object.values(items).forEach((item)=>{
+    names.push(item.name)
+  })  
   return {
-    session
+    session,
+    names
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    create: (item,message)=>dispatch(writeItem(item,message))
+    create: (item,message)=>dispatch(writeItem(item,message)),
+    updateIndex: (names,message)=>dispatch(writeIndex(names,message))
   }
 }
 

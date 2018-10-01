@@ -7,7 +7,7 @@
  * 
  */
 
-import gikistore from '../api'
+import {gikistore} from '../api'
 
 export const SURLS_RECEIVED='SURLS_RECEIVED'
 

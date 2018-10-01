@@ -1,3 +1,12 @@
+/**
+ * @file
+ * 
+ * @copyright 2018 {@link https://limin.github.io Min Li}
+ * 
+ * @license Licensed under {@link https://www.apache.org/licenses/LICENSE-2.0.html Apache License 2.0}
+ * 
+ */
+
 import React  from 'react'
 import PropTypes from 'prop-types'
 import SimpleMDE from 'react-simplemde-editor'
@@ -16,6 +25,9 @@ export default class CreateItem extends React.Component{
 
   create(){
     this.props.create({name:this.state.name,content:this.state.content},this.state.comment)
+    const names=new Set(this.props.names)
+    names.add(this.state.name)
+    this.props.updateIndex(Array.from(names),`Add ${this.state.name}`)
     this.updateState('modalActive',false)
     this.props.history.go(-1)
   }
@@ -39,8 +51,8 @@ export default class CreateItem extends React.Component{
     return (
       <div>
         <nav className="media">
-          <div class="media-content">
-            <div class="content">        
+          <div className="media-content">
+            <div className="content">        
               <InputField name="name" value={this.state.name} type="text" placeholder="Input the name" onChange={(value)=>this.updateState('name',value)}/>
             </div>
           </div>

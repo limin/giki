@@ -9,9 +9,15 @@
 
 import { struct } from 'superstruct'
 
-const Message = struct({
-  name: 'string',
-  level: struct.enum(['info', 'warning', 'success', 'danger'])
-})
+const Item = struct(
+  {
+    name: 'string',
+    path: 'string',
+    sha:'string',
+    content: 'string',
+    commits: ['object'],
+    tags:['string']
+  }
+)
 
-export default Message
+export default Item

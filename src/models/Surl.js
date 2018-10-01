@@ -9,9 +9,16 @@
 
 import { struct } from 'superstruct'
 
-const Message = struct({
-  name: 'string',
-  level: struct.enum(['info', 'warning', 'success', 'danger'])
-})
+const Surl = struct(
+  {
+    space:'string',
+    name: 'string',
+    hash: 'string',
+    timestamp: 'number'
+  },
+  {
+    space:'.'
+  }
+)
 
-export default Message
+export default Surl

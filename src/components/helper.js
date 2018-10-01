@@ -11,21 +11,23 @@ import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import {applyMiddleware,compose } from 'redux'
 import * as redux from 'redux'
+import {pouchstore} from '../api'
 import reducer from '../reducers'
 
 export function createStore(){
-  const preloadedState={
-    session:{
-      user:null,
-      language:'cn',
-      messages:{}
-    },
-    users:{},
-    items:{},
-    surls:{}
-  }
-  const loggerMiddleware = createLogger()
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-  const enhancer = composeEnhancers(applyMiddleware(thunkMiddleware,loggerMiddleware ))
-  return redux.createStore(reducer,preloadedState,enhancer)
+  return Promise.all([pouchstore.load('item'),pouchstore.load('surl')]).then(([items,surls])=>{
+    const preloadedState={
+      session:{
+        user:null,
+        language:'cn',
+        messages:{}
+      },
+      items:{},
+      surls:{}
+    }
+    const loggerMiddleware = createLogger()
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    const enhancer = composeEnhancers(applyMiddleware(thunkMiddleware,loggerMiddleware ))
+    return redux.createStore(reducer,preloadedState,enhancer)  
+  })
 }

@@ -39,6 +39,22 @@ export default class Gikistore{
     }
   }
 
+  buildItemPath(name,space){
+    return `${space}/${name}${this.extension}`        
+  }
+
+  buildSurlPath(hash,space="."){
+    return `${space}/.surl/${hash}.json`
+  }
+
+  buildIndexPath(space="."){
+    return `${space}/index.json`
+  }
+
+  buildMetaPath(name,space){
+    return `${space}/.meta/${name}.json`        
+  }
+
   createPromise(data){
     return new Promise(
       (res,rej)=>{
@@ -65,16 +81,16 @@ export default class Gikistore{
     })
   }
 
-  listComments(name){
-    const path=`${name}${this.extension}`
+  listComments(name,space="."){
+    const path=this.buildItemPath(name,space)
     const repo=this.github.getRepo(this.username, this.repo)
     return repo.listCommits({path}).then((response)=>{
       return this.createPromise(response.data)
     })    
   }
 
-  readItem(name){
-    const path=`${name}${this.extension}`    
+  readItem(name,space="."){
+    const path=this.buildItemPath(name,space)    
     const repo=this.github.getRepo(this.username, this.repo)
     return Promise.all([repo.getContents(this.branch,path),repo.listCommits({path})]).then(([resp1,resp2])=>{
       const items=[resp1.data].filter(file=>this.filtFile(file)).map(file=>this.mapFile(file))
@@ -89,8 +105,8 @@ export default class Gikistore{
     })
   }
 
-  readRawFile(name){
-    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${name}${this.extension}`
+  readRawFile(name,space="."){
+    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${this.buildItemPath(name,space)}`
     return fetch(url).then(response=>{
       if(response.status===404){
         throw new Error("File not found")
@@ -99,21 +115,41 @@ export default class Gikistore{
     })
   }
 
-  writeItem(name, content, message){
-    const path=`${name}${this.extension}`    
+  writeIndex(names,message,space="."){
+    const path=this.buildIndexPath(space)
+    const repo=this.github.getRepo(this.username, this.repo)
+    return repo.writeFile(this.branch,path,JSON.stringify(names),message,{}).then((response)=>{
+      return this.createPromise(response.data)
+    })    
+  }
+  //e.g. tag #restful api#javascript#-nodejs#react#:add tags of the document
+  //+: add tag. optional
+  //-: remove tag. required
+  parseMessage(message){
+    const regexp=/^tag\s+((#[+-]?[\s\w]*)+):/gim
+    const matches=message.matches(regexp)
+    const tags=[]
+    if(matches.length===3){
+      matches[1].split("#").forEach(tag=>{
+        if(tag.trim().length>0){
+          //TODO. add or remove check
+        }
+      })
+    }
+    return tags
+  }
+  writeItem(name, content, message,space="."){
+    const path=this.buildItemPath(name,space)
     const repo=this.github.getRepo(this.username, this.repo)
     //empty options is required to work around the bugs in the api
+    //TODO: parse message and write meta too
     return repo.writeFile(this.branch,path,content,message,{}).then((response)=>{
       return this.createPromise(response.data)
     })
   }
 
-  buildSurlPath(hash){
-    return `.surl/${hash}.json`
-  }
-
-  readSurl(hash){
-    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${this.buildSurlPath(hash)}`
+  readSurl(hash,space="."){
+    const url=`https://raw.githubusercontent.com/${this.username}/${this.repo}/${this.branch}/${this.buildSurlPath(hash,space)}`
     return fetch(url).then(response=>{
       if(response.status===404){
         throw new Error("File not found")
@@ -122,14 +158,15 @@ export default class Gikistore{
     })
   }
 
-  writeSurl(name){
+  writeSurl(name,space="."){
     //only take first 10 chars
     const hash=stringMd5(name).substring(0,10)
-    const path=this.buildSurlPath(hash)    
+    const path=this.buildSurlPath(hash,space)    
     const repo=this.github.getRepo(this.username, this.repo)
     const surl={
       hash,
       name,
+      space,
       timestamp:Date.now()
     }
     return repo.writeFile(this.branch,path,JSON.stringify(surl),`surl ${name}`,{}).then((response)=>{
@@ -141,8 +178,8 @@ export default class Gikistore{
     })
   }
 
-  deleteItem(name){
-    const path=`${name}${this.extension}`    
+  deleteItem(name,space="."){
+    const path=this.buildItemPath(name,space)    
     const repo=this.github.getRepo(this.username, this.repo)
     return repo.deleteFile(this.branch,path).then((response)=>{
       return this.createPromise(response.data)

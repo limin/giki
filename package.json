@@ -1,13 +1,18 @@
 {
   "name": "giki",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "homepage": "./",
+  "main": "public/electron.js",
   "dependencies": {
     "bulma": "^0.7.1",
     "github-api": "^3.0.0",
     "immutability-helper": "^2.7.1",
     "lodash": "^4.17.10",
     "lunr": "^2.3.2",
+    "marked": "^0.5.1",
+    "pouchdb": "^7.0.0",
+    "pouchdb-find": "^7.0.0",
     "pouchdb-md5": "^7.0.0",
     "react": "^16.4.2",
     "react-app-rewire-hot-loader": "^1.0.1",
@@ -15,7 +20,6 @@
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.6",
     "react-localization": "^1.0.10",
-    "react-markdown": "^3.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
@@ -29,10 +33,38 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "electron": "electron .",
+    "dev": "nf start -p 3000",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build && rm -rf dist && electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "create-react-app": "^1.5.2",
-    "jsdoc": "^3.5.5"
+    "electron": "^3.0.2",
+    "electron-builder": "^20.28.4",
+    "foreman": "^2.0.0",
+    "jsdoc": "^3.5.5",
+    "react-scripts": "0.8.5"
+  },
+  "build": {
+    "appId": "io.github.limin",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "files": [
+      {
+        "from": "./",
+        "to": "./",
+        "filter": [
+          "**/*",
+          "!node_modules"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
   }
 }

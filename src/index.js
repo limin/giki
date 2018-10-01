@@ -15,10 +15,11 @@ import {createStore} from './components/helper'
 import App from './components/App'
 import registerServiceWorker from './registerServiceWorker'
 
-const store=createStore()
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root'))  
-registerServiceWorker()
+createStore().then(store=>{
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root'))  
+  registerServiceWorker()  
+})

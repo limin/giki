@@ -7,31 +7,14 @@
  * 
  */
 
-import {gikistore} from '../api'
+import gikistore from '../api'
 
 export const ITEMS_RECEIVED='ITEMS_RECEIVED'
-export const ITEMS_LOADING='ITEMS_LOADING'
-export const ITEM_LOADING='ITEM_LOADING'
 
 export function itemsReceived(items){
 	return {
     	type: ITEMS_RECEIVED,
     	items
-    }
-}
-
-export function itemsLoading(space){
-	return {
-		type: ITEMS_LOADING,
-		space
-    }
-}
-
-export function itemLoading(name,space){
-	return {
-		type: ITEM_LOADING,
-		name,
-		space
     }
 }
 
@@ -76,10 +59,3 @@ export function writeItem(item,message){
 	}
 }
 
-export function writeIndex(items,message,space="."){
-	return function(dispatch){
-		gikistore.writeIndex(items,message,space).then((data)=>{
-			console.log(`index is updated:${message}`)
-		})
-	}
-}

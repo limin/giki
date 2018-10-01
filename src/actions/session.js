@@ -7,7 +7,7 @@
  * 
  */
 
-import gikistore from '../api'
+import {gikistore} from '../api'
 import {MESSAGE_INVALID_LOGIN} from '../glocalization'
 import {loadItems} from './items'
 

@@ -7,11 +7,19 @@
  * 
  */
 
+
 import { struct } from 'superstruct'
 
-const Message = struct({
-  name: 'string',
-  level: struct.enum(['info', 'warning', 'success', 'danger'])
+const Commit = struct({
+  sha:'string',
+  message: 'string',
+  author:{
+    "login": 'string',
+    "avatar_url": 'string',
+    "html_url":'string'
+  }
 })
 
-export default Message
+
+
+export default Commit

@@ -1,7 +1,15 @@
+/**
+ * @file
+ * 
+ * @copyright 2018 {@link https://limin.github.io Min Li}
+ * 
+ * @license Licensed under {@link https://www.apache.org/licenses/LICENSE-2.0.html Apache License 2.0}
+ * 
+ */
+
 import React  from 'react'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import ReactMarkdown from 'react-markdown'
 import update from 'immutability-helper'
 import * as config from '../config'
 import {STRINGS,TEXT_UPDATE,TEXT_SHARE} from '../glocalization'
@@ -37,7 +45,10 @@ export default class Item extends React.Component{
     const pos=href.indexOf("/","https://".length)
     return `${href.substring(0,pos)}${config.PUBLIC_URL}#/surl/${hash}`
   }
-
+  //required by react: https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml
+  createMarkup(html) {
+    return {__html: html};
+  }
   render() {
     const {item,surl}=this.props
     if(item.hasOwnProperty('content')){
@@ -61,7 +72,7 @@ export default class Item extends React.Component{
 
           <hr/>
           <div className="content">
-            <ReactMarkdown source={item.content} />              
+            <div dangerouslySetInnerHTML={this.createMarkup(require('marked')(item.content))} />
           </div>    
           <hr/>
           <h5 className="subtitle is-5">{item.comments.length} comments</h5>

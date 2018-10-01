@@ -1,3 +1,12 @@
+/**
+ * @file
+ * 
+ * @copyright 2018 {@link https://limin.github.io Min Li}
+ * 
+ * @license Licensed under {@link https://www.apache.org/licenses/LICENSE-2.0.html Apache License 2.0}
+ * 
+ */
+
 import React from 'react'
 import {Link} from 'react-router-dom'
 import lunr from 'lunr'
@@ -55,7 +64,6 @@ class ItemList extends React.Component{
             <p className="level-item"><Link className="button is-small is-success" to={"/create/item"}>{STRINGS.texts[TEXT_CREATE]}</Link></p>
           </div>
         </nav>
-
         <table className="table is-striped is-fullwidth">
           <tbody>
           {
