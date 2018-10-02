@@ -1,6 +1,11 @@
 {
   "name": "giki",
   "version": "0.2.0",
+  "description": "A tool to manage markdown files in github.",
+  "author": {
+    "name": "Min Li",
+    "email": "limin9@gmail.com"
+  },
   "private": true,
   "homepage": "./",
   "main": "public/electron.js",

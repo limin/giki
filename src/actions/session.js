@@ -58,6 +58,8 @@ export function login(username,password){
 			password
 		}
 		gikistore.getUserProfile().then(user=>{
+			window.sessionStorage.setItem("user", JSON.stringify(user))
+			window.sessionStorage.setItem("authorization", JSON.stringify({username,password}))
 			dispatch(userLoggedIn(user))
 			dispatch(messagesDeleted([MESSAGE_INVALID_LOGIN]))
 			dispatch(loadItems())

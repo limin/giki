@@ -15,10 +15,16 @@ import {pouchstore} from '../api'
 import reducer from '../reducers'
 
 export function createStore(){
+  let user=null
+  try{
+    user =JSON.parse(window.sessionStorage.getItem("user"))
+  }catch(e){
+    console.err(e)
+  }
   return Promise.all([pouchstore.load('item'),pouchstore.load('surl')]).then(([items,surls])=>{
     const preloadedState={
       session:{
-        user:null,
+        user:user,
         language:'cn',
         messages:{}
       },

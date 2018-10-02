@@ -51,7 +51,7 @@ export default class Item extends React.Component{
   }
   render() {
     const {item,surl}=this.props
-    if(item.hasOwnProperty('content')){
+    if(item && item.hasOwnProperty('content')){
       return (
         <div>
           <nav className="media">

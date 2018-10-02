@@ -38,6 +38,7 @@ class ItemList extends React.Component{
       }
     })
     this.setState(update(this.state,{idx:{$set:idx}}))
+    this.props.loadItems()
   }
 
   render(){

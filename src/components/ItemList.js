@@ -10,6 +10,7 @@
 
 import {connect} from 'react-redux'
 import ItemList from './ItemList.jsx'
+import {loadItems} from '../actions/items'
 
 function mapStateToProps({items,session}){
   return {
@@ -18,4 +19,11 @@ function mapStateToProps({items,session}){
   }
 }
 
-export default connect(mapStateToProps)(ItemList);
+function mapDispatchToProps(dispatch){
+  return {
+    loadItems: ()=>dispatch(loadItems())
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(ItemList);
