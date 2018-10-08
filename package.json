@@ -58,6 +58,9 @@
     "mac": {
       "category": "public.app-category.developer-tools"
     },
+    "nsis":{
+      "createDesktopShortcut":"always"
+    },
     "files": [
       {
         "from": "./",
